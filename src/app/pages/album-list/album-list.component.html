@@ -1,0 +1,40 @@
+
+
+<h4 *ngIf="album">Album {{album.name}}</h4>  
+<br>
+<img *ngIf="album" [src]="showImage(album)" width="100" height="100" alt="Responsive image" class="img-rounded">
+
+<br>
+<br>
+
+<div class="row">
+
+    <iframe class="col-md-4" [src]="url" width="300" height="380" frameborder="0" allowtransparency="true" allow="encrypted-media"></iframe>
+
+    
+    <div class="col-md-6">
+        <h4>Canciones</h4>
+        <table *ngIf="tracks" class="table table-dark table-hover">
+            <thead>
+              <tr>
+                <th>nombre</th>
+                <th>acción</th>
+              </tr>
+            </thead>
+            <tbody *ngFor="let track of tracks | paginate:{ itemsPerPage: pageSize, currentPage: page }">
+              <tr>
+                <td>{{track.name}}</td>
+                <td><button class="btn btn-info" (click)="viewType(track.id);" >Ver canción</button></td>
+              </tr>
+            </tbody>
+          </table>
+        
+          <div class="row justify-content-start">
+           <pagination-controls class="col-4" *ngIf="tracks" (pageChange)="page = $event"></pagination-controls>
+           <select class="col-4" *ngIf="tracks" class="form-control" (change)="changingValue(option.value)" #option >
+             <option [value]="option"  *ngFor="let option of pageOptions">{{option}}</option>
+            </select>
+         </div>
+    </div>
+      
+</div>

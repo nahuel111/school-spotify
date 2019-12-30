@@ -1,0 +1,61 @@
+
+
+<div class="container">
+  <p>Listas de música</p>
+  <form [formGroup]="typeForm">
+    <div class="form-check-inline">
+     <input class="form-check-input" type="radio" formControlName="controlType"  id="artists" value="artist" checked>
+     <label class="form-check-label" for="exampleRadios1">
+       Artista
+     </label>
+   </div>
+   <div class="form-check-inline">
+     <input class="form-check-input" type="radio" formControlName="controlType"  id="albums" value="album">
+     <label class="form-check-label" for="exampleRadios2">
+       Album
+     </label>
+   </div>
+   <div class="form-check-inline">
+     <input class="form-check-input" type="radio" formControlName="controlType"  id="tracks" value="track">
+     <label class="form-check-label" for="exampleRadios3">
+       Canción
+     </label>
+   </div>
+ </form>
+ <br>
+ <div class="row justify-content-start">
+  <pagination-controls class="col-4" *ngIf="items" (pageChange)="page = $event"></pagination-controls>
+  <select class="col-4" *ngIf="items" class="form-control" (change)="changingValue(option.value)" #option >
+    <option [value]="option"  *ngFor="let option of pageOptions">{{option}}</option>
+   </select>
+</div>
+<br>
+   <table *ngIf="items" class="table table-dark table-hover">
+     <thead>
+       <tr>
+         <th>nombre</th>
+         <th *ngIf="typeForm.controls.controlType.value === 'artist'">genero</th>
+         <th>tipo</th>
+         <th>Imagen</th>
+         <th>acción</th>
+       </tr>
+     </thead>
+     <tbody *ngFor="let item of items | paginate:{ itemsPerPage: pageSize, currentPage: page }">
+       <tr>
+         <td>{{item.name}}</td>
+         <td *ngIf="typeForm.controls.controlType.value === 'artist'">{{showGenres(item)}}</td>
+         <td>{{item.type  | rename}}</td>
+         <td> <img [src]="showImage(item)" width="100" height="100" alt="Responsive image" class="img-rounded"></td>
+         <td><button class="btn btn-info" (click)="viewType(item.type, item.id);" >Ver {{item.type | rename}}</button></td>
+       </tr>
+     </tbody>
+   </table>
+ 
+
+    <br>
+
+</div>
+     
+
+
+

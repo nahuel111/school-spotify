@@ -1,0 +1,21 @@
+<div class="wrapper fadeInDown">
+<div id="formContent">
+<form *ngIf="!loading" [formGroup]="userForm" (ngSubmit)="onSubmit()">
+      <br>
+      <input type="text" class="fadeIn second" formControlName="userName" name="login" placeholder="login">
+      <input type="text"  class="fadeIn third" formControlName="password" name="login" placeholder="password">
+      <input type="submit" class="fadeIn fourth" value="Log In">
+
+</form>
+</div>
+</div>
+<div *ngIf="!loading" id="formFooter">
+  <a class="underlineHover" href="#">Forgot Password?</a>
+</div>
+
+<h4 *ngIf="loading">Loading ...</h4>
+
+
+
+
+

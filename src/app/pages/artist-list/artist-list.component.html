@@ -1,0 +1,43 @@
+
+
+<h4 *ngIf="artist">Artista {{artist.name}}</h4>  
+<br>
+<img *ngIf="artist" [src]="showImage(artist)" width="100" height="100" alt="Responsive image" class="img-rounded">
+
+<br>
+
+<div class="row">
+
+    <iframe class="col-md-4" [src]="url" width="300" height="380" frameborder="0" allowtransparency="true" allow="encrypted-media"></iframe>
+
+    
+    <div class="col-md-6">
+        <h4>Albunes</h4>
+        <table *ngIf="albums" class="table table-dark table-hover">
+            <thead>
+              <tr>
+                <th>nombre</th>
+                <th>genero</th>
+                <th>Imagen</th>
+                <th>acción</th>
+              </tr>
+            </thead>
+            <tbody *ngFor="let item of albums | paginate:{ itemsPerPage: pageSize, currentPage: page }">
+              <tr>
+                <td>{{item.name}}</td>
+                <td>{{showGenres(item)}}</td>
+                <td> <img [src]="showImage(item)" width="100" height="100" alt="Responsive image" class="img-rounded"></td>
+                <td><button class="btn btn-info" (click)="viewType(item.id);" >Ver album</button></td>
+              </tr>
+            </tbody>
+          </table>
+        
+          <div class="row justify-content-start">
+           <pagination-controls class="col-4" *ngIf="albums" (pageChange)="page = $event"></pagination-controls>
+           <select class="col-4" *ngIf="albums" class="form-control" (change)="changingValue(option.value)" #option >
+             <option [value]="option"  *ngFor="let option of pageOptions">{{option}}</option>
+            </select>
+         </div>
+    </div>
+      
+</div>
