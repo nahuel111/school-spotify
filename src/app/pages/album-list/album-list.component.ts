@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute,Router } from '@angular/router';
 import { SpotifyAlbumsService } from '../../services/spotify-albums.service';
-import { SpotifyCategoriesService } from '../../services/spotify-categories.service';
+import { StorageComponent } from '../../utility/storage/storage.component';
 import { DomSanitizer} from '@angular/platform-browser';
 
 @Component({
@@ -10,10 +10,17 @@ import { DomSanitizer} from '@angular/platform-browser';
   styleUrls: ['./album-list.component.css']
 })
 export class AlbumListComponent implements OnInit {
+
   type:string="album";
   url:any;
+  id:any;
   album:any;
   tracks:any;
+
+  _storage:any;
+  likesDB:string = "like-tracking";
+  likes:any[];
+
   pageIndex: number = 1;
   pageSize:number = 5;
   pageCount:number = 50;
@@ -23,18 +30,17 @@ export class AlbumListComponent implements OnInit {
     private route:ActivatedRoute,
     private router: Router,
     private albumsService: SpotifyAlbumsService,
-    public sanitizer:DomSanitizer) { }
+    public sanitizer: DomSanitizer) {
+      this._storage = new StorageComponent();
+     }
 
   async ngOnInit() {
+    this._storage.openConnection("like-tracking"); 
 
-    const id = this.route.snapshot.paramMap.get('id');
-    this.url = this.sanitizer.bypassSecurityTrustResourceUrl('https://open.spotify.com/embed/album/' + id); 
+    this.id = this.route.snapshot.paramMap.get('id');
+    this.url = this.sanitizer.bypassSecurityTrustResourceUrl('https://open.spotify.com/embed/album/' + this.id); 
+    await this.load();
 
-    this.album = await this.albumsService.getById(id);
-    const result = await this.albumsService.getTracks(id);
-    this.tracks = result.items;
-
-    console.log("tracks", result);
   }
 
   showImage(item){
@@ -50,16 +56,39 @@ export class AlbumListComponent implements OnInit {
   }
 
 
-  showGenres(item){
-    if(item.genres == null  || item.genres.length == 0 ){
-      return "--";
-    }else{
-      if(item.genres[0] == null){
-        return "--";
-      }else{
-        return item.genres[0];
-      }
-    } 
+  async load(){
+    console.log("load");
+    this.album = await this.albumsService.getById(this.id);
+    const result = await this.albumsService.getTracks(this.id);
+    this.tracks = result.items;
+    console.log("tracks", result);
+    this.likes = await this._storage.getAll(this.likesDB); 
+  
+  }
+
+  async like(item){
+
+     console.log("like",  item);
+     await this._storage.add(this.likesDB, item.id, item);
+     this.likes = await this._storage.getAll(this.likesDB);     
+  }
+
+  async notLike(item){
+
+    console.log("notLike",  item);
+    await this._storage.delete(this.likesDB, item.id);
+    this.likes = await this._storage.getAll(this.likesDB);     
+
+  }
+
+  showLike(id): boolean{
+
+    if(!this.likes){
+      return false;
+    }
+    let resultado = this.likes.find(x => x.id === id);
+
+    return resultado ? true : false;
   }
 
   changingValue(e){

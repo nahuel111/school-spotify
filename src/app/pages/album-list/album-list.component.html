@@ -25,6 +25,9 @@
               <tr>
                 <td>{{track.name}}</td>
                 <td><button class="btn btn-info" (click)="viewType(track.id);" >Ver canción</button></td>
+                <td><i *ngIf="showLike(track.id)" class="fas fa-heart" id="like"  (click)="notLike(track);"></i>
+                  <i *ngIf="!showLike(track.id)" class="fas fa-heart"  id="notlike" (click)="like(track);" ></i>
+                </td>
               </tr>
             </tbody>
           </table>

@@ -63,5 +63,13 @@ export class StorageComponent implements OnInit {
     return (await this.dbPromise).getAllKeys(key);
   }
 
+  /**
+   * Obtiene un listado de registro de una tabla.
+   * @param tableName Representa el identificador único de la tabla.
+   */
+  async getAll(tableName:string): Promise<any> {
+    return (await this.dbPromise).transaction(tableName).objectStore(tableName).getAll();
+  }
+
 }
 

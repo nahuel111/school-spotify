@@ -1,1 +1,38 @@
-<p>like-songs works!</p>
+
+
+<h4>Mis favoritos</h4>  
+<br>
+<br>
+
+<div class="row">
+
+    <div class="col-md-6">
+        <h4>Canciones</h4>
+        <table *ngIf="likes" class="table table-dark table-hover">
+            <thead>
+              <tr>
+                <th>nombre</th>
+                <th>artista</th>
+                <th>acción</th>
+              </tr>
+            </thead>
+            <tbody *ngFor="let item of likes | paginate:{ itemsPerPage: pageSize, currentPage: page }">
+              <tr>
+                <td>{{item.name}}</td>
+                <td>{{item.artists[0].name}}</td>
+                <td><button class="btn btn-info" (click)="viewType(item.id);" >Ver canción</button></td>
+                <td><i class="fas fa-heart" id="like"  (click)="notLike(item);"></i>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        
+          <div class="row justify-content-start">
+           <pagination-controls class="col-4" *ngIf="likes" (pageChange)="page = $event"></pagination-controls>
+           <select class="col-4" *ngIf="likes" class="form-control" (change)="changingValue(option.value)" #option >
+             <option [value]="option"  *ngFor="let option of pageOptions">{{option}}</option>
+            </select>
+         </div>
+    </div>
+      
+</div>
