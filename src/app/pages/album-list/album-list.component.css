@@ -1,0 +1,17 @@
+#like {
+   color: rgb(22, 156, 44);
+}
+
+#notlike {
+    color: rgb(255, 255, 255);
+}
+
+#like:hover {
+    color: rgb(141, 236, 169);
+  }
+
+#notlike:hover {
+
+    color: rgb(0, 255, 64);
+  }
+
