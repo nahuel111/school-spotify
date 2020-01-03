@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { Subscription, Observable } from 'rxjs';
 import { FormGroup, FormBuilder, Validators} from '@angular/forms';
 import { Router } from '@angular/router';
@@ -22,24 +22,23 @@ export class SongListsComponent implements OnInit {
   typeForm: FormGroup;
   
 
+
   constructor(private searchService: SpotifySearchService,
     private accountService: SpotifyAccountService,
     private formBuilder: FormBuilder,
     private router: Router) { }
 
   async ngOnInit() {
-
     this.typeForm = this.formBuilder.group({
       controlType: ['artist', Validators.required]
   });
   
     this.searchSubscription = this.searchService.search$.subscribe(async text =>  {
-      console.log("resultado tipo:",  this.typeForm.controls.controlType.value);
+
       this.accountService.callback();
       const result = await this.searchService.serch(text, this.typeForm.controls.controlType.value, this.pageCount);
       this.items = result[this.typeForm.controls.controlType.value + 's'].items;
-      console.log("resultado: 1", this.items);
-      console.log("resultado:", result[this.typeForm.controls.controlType.value + "s"])
+
     });
 
   }
@@ -50,10 +49,10 @@ export class SongListsComponent implements OnInit {
 
   showImage(item){
     if(item.images == null  || item.images.length == 0 ){
-      return "https://previews.123rf.com/images/xtate/xtate1601/xtate160100103/52027913-cuadros-vac%C3%ADos-sin-contenido-en-blanco-vista-frontal-retrato-marco-vertical-aislado-en-el-fondo-blanco.jpg";
+      return "./assets/images/emty.jpg";
     }else{
       if(item.images[0].url == null){
-        return "https://previews.123rf.com/images/xtate/xtate1601/xtate160100103/52027913-cuadros-vac%C3%ADos-sin-contenido-en-blanco-vista-frontal-retrato-marco-vertical-aislado-en-el-fondo-blanco.jpg";
+        return "./assets/images/emty.jpg";
       }else{
         return item.images[0].url;
       }

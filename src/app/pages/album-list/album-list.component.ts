@@ -4,6 +4,9 @@ import { SpotifyAlbumsService } from '../../services/spotify-albums.service';
 import { StorageComponent } from '../../utility/storage/storage.component';
 import { DomSanitizer} from '@angular/platform-browser';
 
+import {NgbModal, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { EditComponent } from '../../dialogs/playlists/edit/edit.component';
+
 @Component({
   selector: 'app-album-list',
   templateUrl: './album-list.component.html',
@@ -30,12 +33,14 @@ export class AlbumListComponent implements OnInit {
     private route:ActivatedRoute,
     private router: Router,
     private albumsService: SpotifyAlbumsService,
-    public sanitizer: DomSanitizer) {
+    public sanitizer: DomSanitizer,
+    private modalService: NgbModal) {
       this._storage = new StorageComponent();
      }
 
   async ngOnInit() {
-    this._storage.openConnection("like-tracking"); 
+
+    this._storage.openConnection(this.likesDB); 
 
     this.id = this.route.snapshot.paramMap.get('id');
     this.url = this.sanitizer.bypassSecurityTrustResourceUrl('https://open.spotify.com/embed/album/' + this.id); 
@@ -44,19 +49,29 @@ export class AlbumListComponent implements OnInit {
   }
 
   showImage(item){
+
     if(item.images == null  || item.images.length == 0 ){
-      return "https://previews.123rf.com/images/xtate/xtate1601/xtate160100103/52027913-cuadros-vac%C3%ADos-sin-contenido-en-blanco-vista-frontal-retrato-marco-vertical-aislado-en-el-fondo-blanco.jpg";
+      return "./assets/images/emty.jpg";
     }else{
       if(item.images[0].url == null){
-        return "https://previews.123rf.com/images/xtate/xtate1601/xtate160100103/52027913-cuadros-vac%C3%ADos-sin-contenido-en-blanco-vista-frontal-retrato-marco-vertical-aislado-en-el-fondo-blanco.jpg";
+        return  "./assets/images/emty.jpg";
       }else{
         return item.images[0].url;
       }
     } 
   }
 
+  open() {
+    const modalRef = this.modalService.open(EditComponent);
+    modalRef.componentInstance.title = 'About';
+
+  }
+
+  
+
 
   async load(){
+
     console.log("load");
     this.album = await this.albumsService.getById(this.id);
     const result = await this.albumsService.getTracks(this.id);
@@ -78,7 +93,6 @@ export class AlbumListComponent implements OnInit {
     console.log("notLike",  item);
     await this._storage.delete(this.likesDB, item.id);
     this.likes = await this._storage.getAll(this.likesDB);     
-
   }
 
   showLike(id): boolean{

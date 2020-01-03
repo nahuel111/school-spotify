@@ -23,12 +23,7 @@
    </div>
  </form>
  <br>
- <div class="row justify-content-start">
-  <pagination-controls class="col-4" *ngIf="items" (pageChange)="page = $event"></pagination-controls>
-  <select class="col-4" *ngIf="items" class="form-control" (change)="changingValue(option.value)" #option >
-    <option [value]="option"  *ngFor="let option of pageOptions">{{option}}</option>
-   </select>
-</div>
+
 <br>
    <table *ngIf="items" class="table table-dark table-hover">
      <thead>
@@ -51,10 +46,15 @@
      </tbody>
    </table>
  
+    <pagination-controls class="col-4" *ngIf="items" (pageChange)="page = $event"></pagination-controls>
+    <select class="col-4" *ngIf="items" class="form-control" (change)="changingValue(option.value)" #option >
+      <option [value]="option"  *ngFor="let option of pageOptions">{{option}}</option>
+     </select>
 
     <br>
 
 </div>
+
      
 
 

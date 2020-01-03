@@ -32,12 +32,11 @@
             </tbody>
           </table>
         
-          <div class="row justify-content-start">
            <pagination-controls class="col-4" *ngIf="albums" (pageChange)="page = $event"></pagination-controls>
            <select class="col-4" *ngIf="albums" class="form-control" (change)="changingValue(option.value)" #option >
              <option [value]="option"  *ngFor="let option of pageOptions">{{option}}</option>
             </select>
          </div>
-    </div>
+
       
 </div>

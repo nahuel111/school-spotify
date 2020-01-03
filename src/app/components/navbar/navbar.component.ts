@@ -31,11 +31,10 @@ export class NavbarComponent implements OnInit, OnDestroy {
   }
 
   logout(){
-    console.log("entro logout");
     this.userName = null;
     localStorage.removeItem("userName");
     localStorage.removeItem("token");
-   this.router.navigate["/home"];
+    this.router.navigate(['/home']);
   }
 
   onkeyup(search){

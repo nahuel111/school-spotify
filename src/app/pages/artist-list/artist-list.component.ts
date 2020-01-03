@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, EventEmitter, Output,Input } from '@angular/core';
 import { ActivatedRoute,Router } from '@angular/router';
 import { SpotifyArtistsService } from '../../services/spotify-artists.service';
 import { SpotifyCategoriesService } from '../../services/spotify-categories.service';
@@ -19,6 +19,7 @@ export class ArtistListComponent implements OnInit {
   pageSize:number = 5;
   pageCount:number = 50;
   pageOptions = [5,10,15,20,25,30,35,40,45];
+
 
   constructor(
     private route:ActivatedRoute,
@@ -42,10 +43,10 @@ export class ArtistListComponent implements OnInit {
   
   showImage(item){
     if(item.images == null  || item.images.length == 0 ){
-      return "https://previews.123rf.com/images/xtate/xtate1601/xtate160100103/52027913-cuadros-vac%C3%ADos-sin-contenido-en-blanco-vista-frontal-retrato-marco-vertical-aislado-en-el-fondo-blanco.jpg";
+      return "./assets/images/emty.jpg";
     }else{
       if(item.images[0].url == null){
-        return "https://previews.123rf.com/images/xtate/xtate1601/xtate160100103/52027913-cuadros-vac%C3%ADos-sin-contenido-en-blanco-vista-frontal-retrato-marco-vertical-aislado-en-el-fondo-blanco.jpg";
+        return "./assets/images/emty.jpg";
       }else{
         return item.images[0].url;
       }

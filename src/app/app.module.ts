@@ -1,5 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import { NgModule, CUSTOM_ELEMENTS_SCHEMA  } from '@angular/core';
 import { HttpModule } from '@angular/http';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -10,12 +10,12 @@ import { ComponentsModule } from './components/components.module';
 import { HttpClientModule } from '@angular/common/http';
 import { UtilityModule } from "./utility/utility.module";
 import { RenamePipe } from "./pipes/rename.pipe";
+import {FormsModule} from "@angular/forms"
 
 
 @NgModule({
   declarations: [
     AppComponent,
-   // RenamePipe
   ],
   imports: [
     BrowserModule,
@@ -24,8 +24,10 @@ import { RenamePipe } from "./pipes/rename.pipe";
     PagesModule,
     HttpModule,
     HttpClientModule,
-    UtilityModule
+    UtilityModule,
+    FormsModule
   ],
+  schemas: [ CUSTOM_ELEMENTS_SCHEMA ],
   providers: [],
   bootstrap: [AppComponent]
 })

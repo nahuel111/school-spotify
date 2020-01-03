@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { SpotifyTracksService } from '../../services/spotify-tracks.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute,Router } from '@angular/router';
 import {DomSanitizer} from '@angular/platform-browser';
 
 @Component({
@@ -15,6 +15,7 @@ export class TrackListComponent implements OnInit {
 
   constructor(private route:ActivatedRoute,
     private tracksService: SpotifyTracksService,
+    private router: Router,
     public sanitizer:DomSanitizer) { }
 
   async ngOnInit() {

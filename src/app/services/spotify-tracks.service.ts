@@ -12,9 +12,9 @@ export class SpotifyTracksService {
   constructor(private http: HttpClient) { }
 
   async all():Promise<any> {
-    const token:string = localStorage.getItem("token");
-     const query = this.baseUrl + this.resource + '/';
 
+     const token:string = localStorage.getItem("token");
+     const query = this.baseUrl + this.resource + '/';
      const headers = new HttpHeaders({
       Authorization: `Bearer ${token}`
     });

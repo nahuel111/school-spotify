@@ -22,15 +22,11 @@
 
     <div *ngIf="userName" class="navbar-brand" >Usuario : {{userName}} </div>
 
-    <!-- <div *ngIf="userName"  class="form-inline my-2 my-lg-0"> -->
       <div  class="form-inline my-2 my-lg-0">
-      <!-- <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" (keyup.enter)="onkeyup(search.value)" #search > -->
       <input class="form-control mr-sm-2" type="search" placeholder="Buscar" aria-label="Search" (keyup)="onkeyup(search.value)" #search >
-      <!-- <button class="btn btn-outline-success my-2 my-sm-0"  type="submit"> <i class="fas fa-search"></i></button> -->
     </div>
 
     <button *ngIf="userName" class="btn btn-outline-success my-2 my-sm-0" (click)="logout()">LogOut</button>
-
   </nav>
 
   
