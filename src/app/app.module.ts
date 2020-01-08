@@ -10,12 +10,15 @@ import { ComponentsModule } from './components/components.module';
 import { HttpClientModule } from '@angular/common/http';
 import { UtilityModule } from "./utility/utility.module";
 import { RenamePipe } from "./pipes/rename.pipe";
-import {FormsModule} from "@angular/forms"
+import {FormsModule} from "@angular/forms";
+import {EditComponent} from "./dialogs/playlists/edit/edit.component";
+import {ListComponent} from "./dialogs/playlists/list/list.component";
+
 
 
 @NgModule({
   declarations: [
-    AppComponent,
+    AppComponent
   ],
   imports: [
     BrowserModule,

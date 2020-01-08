@@ -1,6 +1,6 @@
 
 
-<h4>Mis favoritos</h4>  
+<h4>Mis lista de canciones</h4>  
 <br>
 <br>
 
@@ -8,7 +8,7 @@
 
     <div class="col-md-6">
         <h4>Canciones</h4>
-        <table *ngIf="likes" class="table table-dark table-hover">
+        <table *ngIf="playlists" class="table table-dark table-hover">
             <thead>
               <tr>
                 <th>nombre</th>
@@ -16,10 +16,10 @@
                 <th>acción</th>
               </tr>
             </thead>
-            <tbody *ngFor="let item of likes | paginate:{ itemsPerPage: pageSize, currentPage: page }">
-              <tr *ngIf="item.id != undefined">
+            <tbody *ngFor="let item of playlists | paginate:{ itemsPerPage: pageSize, currentPage: page }">
+              <tr>
                 <td>{{item.name}}</td>
-                <td>{{item.artists[0].name}}</td>
+                <td>{{item.public}}</td>
                 <td><button class="btn btn-info" (click)="viewType(item.id);" >Ver canción</button></td>
                 <td><i class="fas fa-heart" id="like"  (click)="notLike(item);"></i>
                 </td>
@@ -28,11 +28,12 @@
           </table>
         
           <div class="row justify-content-start">
-           <pagination-controls class="col-4" *ngIf="likes" (pageChange)="page = $event"></pagination-controls>
-           <select class="col-4" *ngIf="likes" class="form-control" (change)="changingValue(option.value)" #option >
+           <pagination-controls class="col-4" *ngIf="playlists" (pageChange)="page = $event"></pagination-controls>
+           <select class="col-4" *ngIf="playlists" class="form-control" (change)="changingValue(option.value)" #option >
              <option [value]="option"  *ngFor="let option of pageOptions">{{option}}</option>
             </select>
          </div>
     </div>
       
 </div>
+

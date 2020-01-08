@@ -1,7 +1,7 @@
 import { Injectable, EventEmitter } from '@angular/core';
-import { Http } from '@angular/http';
 import { environment } from '../../environments/environment'
 import { HttpHeaders, HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -11,7 +11,7 @@ export class SpotifyAccountService {
   baseUrl:string = 'https://accounts.spotify.com/authorize';
   userAccount$ = new EventEmitter<string>();
 
-  constructor(private http: Http) { }
+  constructor(private http: HttpClient) { }
 
   async login(){
 
@@ -25,12 +25,29 @@ export class SpotifyAccountService {
     window.location.href =  query;
 
   }
-
-   async callback() {
+  
+   callback() {
     const url = `https://bootcamp-angular.herokuapp.com/spotify/${environment.account.clientId}/${environment.account.secretId}`;
-    const token = (await this.http.get(url).toPromise()).json().access_token;
-    console.log("token refresh",token );
-    localStorage.setItem('token', token);   
+     this.http.get(url).subscribe((data:any) => {
+      console.log("token refresh 1",data.access_token );
+    localStorage.setItem('token', data.access_token);
+    })
    }
-   
-}
+
+   refreshToken(){
+    const refresh_token = Observable.create((observer:any) => {
+      setInterval(() => {
+        observer.next(this.callback());
+    }, 60000); //60000, 1.8e+6, 200000
+    });
+    refresh_token.subscribe((data) => {});
+   }
+
+     /**
+     * prueba switchMap 
+     * */ 
+   switchMap(name:any) {
+    const url = `https://bootcamp-angular.herokuapp.com/spotify/${environment.account.clientId}/${environment.account.secretId}`;
+     return this.http.get(url);
+   }
+ }

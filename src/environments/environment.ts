@@ -8,8 +8,8 @@ export const environment = {
     baseUrl:'https://api.spotify.com/v1/'
   },
   account: {
-    clientId :"-------",
-    secretId :"-------"
+    clientId :"ef293b5e099348b7a19884dc5d78f4f9",
+    secretId :"d0a21657e8ce4652992cf79ce7fe4ac6"
   },
   app: {
     baseUrl :''

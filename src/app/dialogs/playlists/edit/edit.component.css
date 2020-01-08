@@ -88,4 +88,9 @@
       transform: none;
     }
   }
+
+  .form {
+    padding-right: 15px;
+    padding-left: 15px;
+  }
   

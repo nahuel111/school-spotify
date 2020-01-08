@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { Subscription, Observable } from 'rxjs';
+import { Subscription, Observable, of, from } from 'rxjs';
 import { FormGroup, FormBuilder, Validators} from '@angular/forms';
 import { Router } from '@angular/router';
 
@@ -21,21 +21,19 @@ export class SongListsComponent implements OnInit {
   searchSubscription: Subscription;
   typeForm: FormGroup;
   
-
-
   constructor(private searchService: SpotifySearchService,
     private accountService: SpotifyAccountService,
     private formBuilder: FormBuilder,
     private router: Router) { }
 
   async ngOnInit() {
+
+    this.accountService.refreshToken();
     this.typeForm = this.formBuilder.group({
       controlType: ['artist', Validators.required]
   });
   
     this.searchSubscription = this.searchService.search$.subscribe(async text =>  {
-
-      this.accountService.callback();
       const result = await this.searchService.serch(text, this.typeForm.controls.controlType.value, this.pageCount);
       this.items = result[this.typeForm.controls.controlType.value + 's'].items;
 

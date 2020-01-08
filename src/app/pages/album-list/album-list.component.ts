@@ -40,8 +40,8 @@ export class AlbumListComponent implements OnInit {
 
   async ngOnInit() {
 
-    this._storage.openConnection(this.likesDB); 
-
+    this._storage.openConnection(this.likesDB,1); 
+   
     this.id = this.route.snapshot.paramMap.get('id');
     this.url = this.sanitizer.bypassSecurityTrustResourceUrl('https://open.spotify.com/embed/album/' + this.id); 
     await this.load();

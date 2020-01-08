@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { NgModule, CUSTOM_ELEMENTS_SCHEMA  } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule} from '@angular/forms';
 import {FormsModule} from "@angular/forms"
@@ -10,12 +10,14 @@ import { AlbumListComponent } from './album-list/album-list.component';
 import { TrackListComponent } from './track-list/track-list.component';
 import { LikeSongsComponent } from './like-songs/like-songs.component';
 import { EditComponent } from '../dialogs/playlists/edit/edit.component';
+import {ListComponent} from "../dialogs/playlists/list/list.component";
 
 import { UtilityModule } from "../utility/utility.module";
 import { RenamePipe } from "../pipes/rename.pipe";
 
 import { NgbModule, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { NgxPaginationModule } from 'ngx-pagination';
+import { PlaylistsComponent } from './playlists/playlists.component';
 
 
 
@@ -28,7 +30,9 @@ import { NgxPaginationModule } from 'ngx-pagination';
     AlbumListComponent,
     TrackListComponent,
     LikeSongsComponent,
-    EditComponent
+    EditComponent,
+    ListComponent,
+    PlaylistsComponent
   ],
     
   imports: [
@@ -42,8 +46,10 @@ import { NgxPaginationModule } from 'ngx-pagination';
   providers: [
     NgbActiveModal
   ],
+  schemas: [ CUSTOM_ELEMENTS_SCHEMA ],
   entryComponents: [
-    EditComponent
+    EditComponent,
+    ListComponent
   ]
 
 })
