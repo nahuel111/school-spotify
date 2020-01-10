@@ -1,17 +1,13 @@
-import { Component, OnInit } from '@angular/core';
-import {NgbModal, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import {SpotifyPlaylistsService } from '../../../services/spotify-playlists.service';
-import {SpotifyAccountService } from '../../../services/spotify-account.service';
+import { Component, OnInit, Input } from '@angular/core';
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import {StorageComponent } from '../../../utility/storage/storage.component';
+import {Playlist } from '../../../models/playlist';
 
 
-import { Observable, of, pipe } from 'rxjs';
-import { switchMap, debounceTime, catchError } from 'rxjs/operators';
+import { Observable, of } from 'rxjs';
+import { map } from 'rxjs/operators';
 
-import { FormControl,
-  FormGroup,
-  FormBuilder } from '@angular/forms';
-
+import { FormControl} from '@angular/forms';
 
 @Component({
   selector: 'app-modal',
@@ -21,39 +17,107 @@ import { FormControl,
 export class EditComponent implements OnInit {
 
   searchField: FormControl;
-
   name:string;
-  valor:Observable<string>;
-  lists:any[]=[];
-  user:string = localStorage.getItem("userName");
-
-  _storage:any;
+  description:string;
   tableDB:string = "like-tracking";
+  playlists$:Observable<any>;
+  playlists:Playlist[];
+  user:string = localStorage.getItem("userName");
+  _storage:any;
 
-  constructor(private modalService: NgbActiveModal,
-    private playlistsService: SpotifyPlaylistsService,
-    private accountService: SpotifyAccountService) {
-      this._storage = new StorageComponent();
-     }
+  //#region Inputs and ouputs
 
-  async ngOnInit() { 
-    
-     this._storage.openConnection(this.tableDB)
+  @Input() public trackId;
+  @Input() public hideList;
+
+  //#endregion
+
+  //#region constructor and init
+
+   constructor(private modalService: NgbActiveModal) {
+    this._storage = new StorageComponent();
+   }
+
+   async ngOnInit() { 
+
+    this._storage.openConnection(this.tableDB);
+
+    this.clean();
+
     await this.load();
-    this.accountService.callback();
   }
 
-  close() {
+  //#endregion
+
+  //#region public method
+
+  public addPlaylists(id:string){
+
+   let notModified = [];
+   let modified;
+
+   this.playlists.forEach((item) => {
+    if (item.id === id) {
+      modified = new Playlist(id, item.name)
+      modified.addTracks(this.trackId);     
+    } else
+    {
+      notModified.push(item); 
+    }
+   });
+
+    this.updateLists(notModified, modified);
+ 
+  }
+  
+  public close() {
     this.modalService.close();
   }
 
-   async save() {
-    console.log("nombre", this.name);
-    // this.lists.push({name:this.name,id:"124" + this.name}); 
-    const playlist = {name: this.name, public:false,description:"", type:"playlists"};
-   
+  public async save() {
+
+    await this.createPlayList();
+ 
+    this.load();
+
+  }
+
+  //#endregion
+
+  //#region private method
+
+  private updateLists(notModify:any[], modify:any){
+    
+   notModify.push(modify);
+
+  // this._storage.delete(this.tableDB, "playlists")
+
+   console.log("resultado", notModify);
+
+  // this._storage.add(this.tableDB, "playlists", notModify);
+
+  }
+
+  private clean(){
+    this.name = null;
+    this.description = null;
+  }
+
+  private async createPlayList(){
+
+    await this.editPlayList();
+
+    this.clean();
+  }
+
+
+  private async editPlayList(){
+
+    const playlist = new Playlist(this.generateID(), this.name);
+    playlist.addTracks(this.trackId);
+ 
+    console.log("playlist", playlist);
     const result = await this._storage.getAll(this.tableDB);
-    console.log("resultado py", result);
     const playlists = [];
     result.forEach(element => {
      
@@ -61,52 +125,35 @@ export class EditComponent implements OnInit {
         element.forEach(item => {
           if(item.type === "playlists"){
             playlists.push(item);
-
           }
         })
-      //playlists.push(element);
       }
     });
 
     playlists.push(playlist);
     await this._storage.add(this.tableDB, "playlists", playlists);
-    this.load();
-    // this.playlistsService.create(this.user, playlist).subscribe((r) => {
-    //   console.log("nombre", r);
-    //   this.load();
-    // });
-  
-    this.name = null;
-
   }
 
-  async load(){ 
-    //   this.playlistsService.getAll(this.user).subscribe((r : any) => {
-    //   console.log("resultado subscribe", r );
-    //   this.lists = r.items;
-    // });
+  private async load(){ 
 
-    this.playlistsService.findById(this.user).subscribe((r : any) => {
-      console.log("resultado subscribe", r );
-      this.lists = r.items;
+    this._storage.openConnection(this.tableDB)
+    this.playlists$ = of(await this._storage.getAll(this.tableDB));
+    this.playlists$
+    .pipe(
+      map((r) => r.find(x => Array.isArray(x))))
+      .subscribe((data)=> {
+      console.log("resultado ", data);
+      this.playlists = data;
     });
-  //  console.log("resultado listas", await this._storage.getAll(this.tableDB1));
   }
 
-  delete(id){
-    console.log("dddd", id);
-   let result =this.lists.find(x => x.id !== id);
-    this.lists = null;
-    this.lists = result;
-  }
-
-
-  generateID():any {
+  private generateID():any {
     // Math.random should be unique because of its seeding algorithm.
     // Convert it to base 36 (numbers + letters), and grab the first 9 characters
     // after the decimal.
     return '_' + Math.random().toString(36).substr(2, 9);
   }
 
+  //#endregion
 
 }

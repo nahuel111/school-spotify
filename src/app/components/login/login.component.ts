@@ -16,12 +16,9 @@ import { switchMap, debounceTime, catchError, delay } from 'rxjs/operators';
 })
 export class LoginComponent implements OnInit {
   userForm: FormGroup;
-
   searchField: FormControl;
-
-
-   get parentId(): FormControl {
-    return this.userForm.get("search") as FormControl;
+  get parentId(): FormControl {
+  return this.userForm.get("search") as FormControl;
 }
 
   constructor(
@@ -41,7 +38,8 @@ export class LoginComponent implements OnInit {
   });
 
     /**
-     * prueba switchMap */  
+     * prueba switchMap
+     *  */  
     this.userForm.controls.userName.valueChanges.pipe(
       debounceTime(400),
 
@@ -67,10 +65,10 @@ export class LoginComponent implements OnInit {
 
   async onSubmit() {
   
-    localStorage.setItem('userName', this.userForm.controls.userName.value);
+   localStorage.setItem('userName', this.userForm.controls.userName.value);
    await this.accountService.login();
 
-    }
+  }
 
 
 

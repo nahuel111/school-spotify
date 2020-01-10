@@ -4,7 +4,7 @@ import { SpotifyAlbumsService } from '../../services/spotify-albums.service';
 import { StorageComponent } from '../../utility/storage/storage.component';
 import { DomSanitizer} from '@angular/platform-browser';
 
-import {NgbModal, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import {NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { EditComponent } from '../../dialogs/playlists/edit/edit.component';
 
 @Component({
@@ -61,13 +61,11 @@ export class AlbumListComponent implements OnInit {
     } 
   }
 
-  open() {
-    const modalRef = this.modalService.open(EditComponent);
-    modalRef.componentInstance.title = 'About';
+  open(id:string) {
+    const modalRef = this.modalService.open(EditComponent,);
+    modalRef.componentInstance.trackId = id;
 
   }
-
-  
 
 
   async load(){

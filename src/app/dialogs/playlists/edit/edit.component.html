@@ -11,12 +11,14 @@
                 <div class="row form">        
                     <input type="text" class="form-control col-sm-6"
                     [(ngModel)]="name"
+       
                      placeholder="nombre">
+                     
                      <div class="col-sm-1"></div>
                      <button type="button" class="btn btn-primary col-sm-3" (click)="save()">crear</button>
                  </div> 
              <br>
-             <list [lists]="lists" (deleteItem)="delete($event)"></list>
+             <list *ngIf="!hideList" [lists]="playlists" (deleteItem)="addPlaylists($event)"></list>
         </div>
         <div class="modal-footer">
           

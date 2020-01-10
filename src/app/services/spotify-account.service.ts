@@ -37,8 +37,9 @@ export class SpotifyAccountService {
    refreshToken(){
     const refresh_token = Observable.create((observer:any) => {
       setInterval(() => {
+        console.log("token..")
         observer.next(this.callback());
-    }, 60000); //60000, 1.8e+6, 200000
+    }, 1000); //60000, 1.8e+6, 200000
     });
     refresh_token.subscribe((data) => {});
    }

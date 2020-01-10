@@ -3,6 +3,10 @@
 <h4>Mis lista de canciones</h4>  
 <br>
 <br>
+<button class="btn btn-info" (click)="open();" >Nueva Playlists</button>
+<br>
+<br>
+
 
 <div class="row">
 
@@ -12,17 +16,15 @@
             <thead>
               <tr>
                 <th>nombre</th>
-                <th>artista</th>
+                <th>descripción</th>
                 <th>acción</th>
               </tr>
             </thead>
             <tbody *ngFor="let item of playlists | paginate:{ itemsPerPage: pageSize, currentPage: page }">
               <tr>
                 <td>{{item.name}}</td>
-                <td>{{item.public}}</td>
+                <td>{{item.description}}</td>
                 <td><button class="btn btn-info" (click)="viewType(item.id);" >Ver canción</button></td>
-                <td><i class="fas fa-heart" id="like"  (click)="notLike(item);"></i>
-                </td>
               </tr>
             </tbody>
           </table>
